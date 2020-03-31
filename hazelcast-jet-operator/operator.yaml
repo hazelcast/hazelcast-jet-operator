@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hazelcast-jet-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: hazelcast-jet-operator
+  template:
+    metadata:
+      labels:
+        name: hazelcast-jet-operator
+    spec:
+      serviceAccountName: hazelcast-jet-operator
+      containers:
+        - name: hazelcast-jet-operator
+          image: hazelcast/hazelcast-jet-operator:0.0.1
+          imagePullPolicy: Always
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "hazelcast-jet-operator"
+            - name: SERVICE_ACCOUNT_NAME
+              value: hazelcast-jet-operator
+            - name: RELATED_IMAGE_HAZELCAST_JET
+              value: hazelcast/hazelcast-jet:4.0
+            - name: RELATED_IMAGE_MANAGEMENT_CENTER
+              value: hazelcast/hazelcast-jet-management-center:4.0

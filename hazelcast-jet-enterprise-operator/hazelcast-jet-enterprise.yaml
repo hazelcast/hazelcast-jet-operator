@@ -1,0 +1,26 @@
+apiVersion: hazelcast.com/v1alpha1
+kind: HazelcastJetEnterprise
+metadata:
+  name: jet-enterprise-cluster
+spec:
+  cluster:
+    memberCount: 2
+  jet:
+    licenseKeySecretName: jet-license-key-secret
+    resources:
+      requests:
+        memory: 1024Mi
+        cpu: 100m
+      limits:
+        memory: 1024Mi
+  securityContext:
+    runAsUser: ""
+    runAsGroup: ""
+    fsGroup: ""
+  managementcenter:
+    resources:
+      requests:
+        memory: 1024Mi
+        cpu: 100m
+      limits:
+        memory: 1024Mi
