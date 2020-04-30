@@ -26,7 +26,15 @@ Note: You need to clone this repository before following the next steps.
 
 ### Step 1: Create RBAC
 
-Run the following commands to configure the Operator permissions.
+Set the namespace that you are going to run the Operator(`default` in this case):
+
+    sed -i "s|REPLACE_NAMESPACE|default|g" operator-rbac.yaml
+
+If you are on MacOSX run this:
+
+    sed -i "" "s|REPLACE_NAMESPACE|default|g" operator-rbac.yaml
+
+Then run following to configure the Operator permissions.
 
     kubectl apply -f operator-rbac.yaml
 

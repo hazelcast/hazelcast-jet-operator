@@ -88,13 +88,14 @@ rules:
       - "*"
 
 ---
-kind: RoleBinding
+kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: hazelcast-jet-enterprise-operator
 subjects:
   - kind: ServiceAccount
     name: hazelcast-jet-enterprise-operator
+    namespace: REPLACE_NAMESPACE
 roleRef:
   kind: ClusterRole
   name: hazelcast-jet-enterprise-operator
