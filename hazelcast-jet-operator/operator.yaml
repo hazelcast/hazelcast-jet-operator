@@ -15,7 +15,7 @@ spec:
       serviceAccountName: hazelcast-jet-operator
       containers:
         - name: hazelcast-jet-operator
-          image: hazelcast/hazelcast-jet-operator:0.0.1
+          image: hazelcast/hazelcast-jet-operator:0.1.0
           imagePullPolicy: Always
           env:
             - name: WATCH_NAMESPACE
@@ -28,9 +28,7 @@ spec:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
               value: "hazelcast-jet-operator"
-            - name: SERVICE_ACCOUNT_NAME
-              value: hazelcast-jet-operator
             - name: RELATED_IMAGE_HAZELCAST_JET
-              value: hazelcast/hazelcast-jet:4.0
+              value: hazelcast/hazelcast-jet:4.1
             - name: RELATED_IMAGE_MANAGEMENT_CENTER
-              value: hazelcast/hazelcast-jet-management-center:4.0
+              value: hazelcast/hazelcast-jet-management-center:4.1

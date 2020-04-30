@@ -11,8 +11,8 @@ spec:
   image:
     pullPolicy: IfNotPresent
     repository: hazelcast/hazelcast-jet-enterprise
-    tag: "4.0"
-  imagetag: hazelcast/hazelcast-jet-enterprise:4.0
+    tag: "4.1"
+  imagetag: hazelcast/hazelcast-jet-enterprise:4.1
   jet:
     javaOpts: null
     licenseKey: null
@@ -66,7 +66,7 @@ spec:
     image:
       pullPolicy: IfNotPresent
       repository: hazelcast/hazelcast-jet-management-center
-      tag: "4.0"
+      tag: "4.1"
     javaOpts: null
     licenseKey: null
     livenessProbe:
@@ -98,7 +98,7 @@ spec:
             namespace: ${namespace}
             resolve-not-ready-addresses: true
             service-name: ${serviceName}
-  managementcenterimagetag: hazelcast/hazelcast-jet-management-center:4.0
+  managementcenterimagetag: hazelcast/hazelcast-jet-management-center:4.1
   metrics:
     enabled: false
     service:

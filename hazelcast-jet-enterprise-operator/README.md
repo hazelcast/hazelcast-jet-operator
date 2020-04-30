@@ -22,7 +22,7 @@ performed each time you want to create a new Hazelcast Jet cluster.
 Note: You need to clone this repository before following the next steps.
 
     git clone https://github.com/hazelcast/hazelcast-jet-operator.git
-    cd hazelcast-jet-operator/hazelcast-jet-operator
+    cd hazelcast-jet-operator/hazelcast-jet-enterprise-operator
 
 ### Step 1: Create RBAC
 
@@ -85,11 +85,56 @@ Management Center) should be created.
 
 **Note**: In `hazelcast-jet-enterprise.yaml` you can specify all parameters available
 in the [Hazelcast Jet Enterprise Helm Chart](https://github.com/hazelcast/charts/tree/master/stable/hazelcast-jet-enterprise).
+The `hazelcast-jet-full.yaml` file could be used as a reference to see all
+possible configuration options with their default values.
+
+### Step 6: Connect to Hazelcast Jet Management Center
 
 To connect to Hazelcast Jet Management Center, you can use `EXTERNAL-IP`
 and open your browser at: `http://<EXTERNAL-IP>:8081` or `http://<EXTERNAL-IP>:443`
-. If your Kubernetes environment does not have Load Balancer configured,
-then please use `NodePort` or `Ingress`.
+.
+
+If you are running on a Minikube environment which does not have
+Load Balancer support out of the box and it will show the `EXTERNAL-IP`
+as `pending`.
+
+To solve this problem, on a separate terminal window, run the following
+command:
+
+    minikube tunnel
+
+It will ask for a password and expose service to the host operating
+system.
+
+When asked for service details with the following:
+    kubectl get svc
+
+It should show the `EXTERNAL-IP` and Hazelcast Jet Management Center
+should be accessible at  `http://<EXTERNAL-IP>:8081`.
+
+### Step 7: Submitting a Job to the Jet Cluster
+
+The Jet CLI shipped with the ZIP distribution could be used to interact 
+with the cluster. Since the cluster is inside the Kubernetes environment,
+we need to make port forwarding to access the cluster.
+
+To forward port 5701 of the pod to local 5701 port run the following
+command:
+
+    kubectl port-forward pods/jet-enterprise-cluster-hazelcast-jet-enterprise-0  5701:5701
+
+After that, we can use `localhost:5701` address to interact with the
+cluster. The CLI, by default, tries to connect `localhost:5701`, so
+there is no need to explicitly configure it.
+
+Following will submit the example job from the distribution to the Jet
+cluster inside Kubernetes:
+
+    cd hazelcast-jet-<version>
+    bin/jet submit examples/hello-world.jar
+
+After job submission you can check out its details from Management
+Center.
 
 ## Configuration
 
@@ -106,3 +151,63 @@ environment variables in `operator.yaml`.
 You can check all configuration options in `hazelcast-jet-enterprise-full.yaml`.
 Description of all parameters can be found
 [here](https://github.com/hazelcast/charts/tree/master/stable/hazelcast-jet-enterprise#configuration).
+
+### Adding Custom JAR file to the Classpath
+
+You can mount any volume which contains your JAR files
+to the pods created by operator using `customVolume` configuration.
+
+When the `customVolume` set, the operator will mount provided
+volume to the pod on `/data/custom` path.
+This path also appended to the classpath of running Java process.
+
+For example, if you have existing host path Persistent Volume and
+Persistent Volume Claims like below;
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jet-hostpathpv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/path/to/my/jars"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jet-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+```
+
+You can configure your operator to use it like below in your `hazelcast-jet.yaml`
+file.
+
+```yaml
+apiVersion: hazelcast.com/v1alpha1
+kind: HazelcastJet
+metadata:
+  name: jet-cluster
+spec:
+  cluster:
+    memberCount: 2
+  customVolume:
+    persistentVolumeClaim:
+      claimName: jet-pv-claim
+```
+
+See [Volumes](https://kubernetes.io/docs/concepts/storage/) section on the
+Kubernetes documentation for other available options.
