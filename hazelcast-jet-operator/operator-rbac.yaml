@@ -25,7 +25,8 @@ rules:
       - persistentvolumeclaims
       - events
       - configmaps
-      - secrets
+      - serviceaccounts
+      - services
     verbs:
       - "*"
   - apiGroups:
@@ -37,16 +38,10 @@ rules:
   - apiGroups:
       - rbac.authorization.k8s.io
     resources:
-      - clusterrolebindings
+      - roles
+      - rolebindings
       - clusterroles
-    verbs:
-      - "*"
-  - apiGroups:
-      - ""
-    resources:
-      - configmaps
-      - serviceaccounts
-      - services
+      - clusterrolebindings
     verbs:
       - "*"
   - apiGroups:
