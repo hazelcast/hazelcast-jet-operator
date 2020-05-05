@@ -1,4 +1,4 @@
-# Hazelcast Jet Opearator
+# Hazelcast Jet Operator
 
 Hazelcast Jet is packaged with [Operator
 Framework](https://github.com/operator-framework), which simplifies

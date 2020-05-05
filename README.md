@@ -1,4 +1,4 @@
-# Hazelcast Jet Kubernetes Opearators
+# Hazelcast Jet Kubernetes Operators
 
 Hazelcast Jet and Hazelcast Jet Enterprise is packaged with Operator Framework, which simplifies deployment on Kubernetes and OpenShift.
 
