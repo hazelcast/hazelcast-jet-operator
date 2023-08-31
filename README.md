@@ -1,9 +1,1 @@
-# Hazelcast Jet Kubernetes Operators
-
-Hazelcast Jet and Hazelcast Jet Enterprise is packaged with Operator Framework, which simplifies deployment on Kubernetes and OpenShift.
-
-See corresponding READMEs from below for each operator for step-by-step
-installation.
-
-- [Hazelcast Jet Operator](hazelcast-jet-operator/README.md)
-- [Hazelcast Jet Enterprise Operator](hazelcast-jet-enterprise-operator/README.md)
+#### **DEPRECATED:** `hazelcast-jet-operator` is deprecated and not supported anymore. You can use [`Hazelcast Platform Operator`](https://github.com/hazelcast/hazelcast-platform-operator) for a better experience with Jet within Kubernetes!
